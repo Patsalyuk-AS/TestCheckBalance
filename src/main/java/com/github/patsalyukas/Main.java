@@ -8,12 +8,14 @@ import com.github.patsalyukas.device.SelfServiceDevice;
 import com.github.patsalyukas.outsideclasses.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.time.LocalDate;
 
 @Slf4j
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchProviderException, NoSuchAlgorithmException {
         log.info("Starting application.");
         DataBase<Card> dataBase = new DataBase<>(new BankCardFactory());
         try {
@@ -29,9 +31,9 @@ public class Main {
         SelfServiceDevice atm = new ATM(100000, atmAddress, dataBase, new ReliabilityOfSelfServiceDevice(1000));
         CheckerBalanceOnSelfServiceDevice checkerBalanceOnSelfServiceDevice = new CheckerBalanceOnSelfServiceDevice(clientPassport, atm, card);
         try {
-            System.out.println(checkerBalanceOnSelfServiceDevice.checkBalance());
+            log.info(checkerBalanceOnSelfServiceDevice.checkBalance().toString());
             checkerBalanceOnSelfServiceDevice.getBackCard();
-            System.out.println(checkerBalanceOnSelfServiceDevice.checkBalance());
+            log.info(checkerBalanceOnSelfServiceDevice.checkBalance().toString());
         } catch (BankException exception) {
             atm.handleError(exception);
         }

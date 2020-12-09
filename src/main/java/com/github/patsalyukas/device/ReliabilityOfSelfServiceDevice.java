@@ -2,15 +2,16 @@
 
 package com.github.patsalyukas.device;
 
-import java.util.Random;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 
 public class ReliabilityOfSelfServiceDevice implements Reliability {
 
     public static final int MIN_RELIABILITY = 0;
     public static final int MAX_RELIABILITY = 1000;
 
-    private int reliability;
-    private static Random random = new Random();
+    private final int reliability;
 
     public ReliabilityOfSelfServiceDevice(int reliability) {
         if (reliability < MIN_RELIABILITY) {
@@ -23,7 +24,8 @@ public class ReliabilityOfSelfServiceDevice implements Reliability {
     }
 
     @Override
-    public DeviceStatus checkDeviceStatus() {
+    public DeviceStatus checkDeviceStatus() throws NoSuchProviderException, NoSuchAlgorithmException {
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
         int chance = random.nextInt(reliability + 1);
         return (chance == 0 ? DeviceStatus.BAD : DeviceStatus.OK);
     }

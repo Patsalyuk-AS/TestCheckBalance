@@ -12,9 +12,9 @@ import java.util.stream.Stream;
 @Slf4j
 public class DataBase<E extends Card> implements DataBaseServices<E> {
 
-    private Map<Card, Balance> cards = new HashMap<>();
+    private final Map<Card, Balance> cards = new HashMap<>();
     private final FactoryForCards factoryForCards;
-    private Set<E> requestsOfBalances = new HashSet<>(20);
+    private final Set<E> requestsOfBalances = new HashSet<>(20);
 
     public DataBase(FactoryForCards factoryForCards) {
         this.factoryForCards = factoryForCards;
@@ -39,18 +39,17 @@ public class DataBase<E extends Card> implements DataBaseServices<E> {
     @Override
     public void showHistoryOfRequestsOfBalances() {
         Stream<E> cardStream = requestsOfBalances.stream();
-        cardStream.forEach(System.out::println);
+        cardStream.forEach(card -> log.info(card.toString()));
     }
 
     @Override
-    public void addCardToDataBase(String firstName, String lastName, String cardNumber, String expDate, String PIN, String CVI, BankCardType type, Currency currency, BigDecimal sum) throws IllegalCardParametersException {
-        cards.put(factoryForCards.createCard(firstName, lastName, cardNumber, expDate, PIN, CVI, type), factoryForCards.createBalance(currency, sum));
+    public void addCardToDataBase(String firstName, String lastName, String cardNumber, String expDate, String pin, String cvi, BankCardType type, Currency currency, BigDecimal sum) throws IllegalCardParametersException {
+        cards.put(factoryForCards.createCard(firstName, lastName, cardNumber, expDate, pin, cvi, type), factoryForCards.createBalance(currency, sum));
     }
 
     @Override
     public void handleBankException(BankException exception) {
         log.warn(exception.toString());
-        System.out.println(exception.getMessage());
     }
 
     private void checkRepeatedRequestOfBalance(E e) throws RepeatRequestOfBalanceException {

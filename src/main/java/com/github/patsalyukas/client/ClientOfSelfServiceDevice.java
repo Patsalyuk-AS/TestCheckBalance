@@ -6,6 +6,9 @@ import com.github.patsalyukas.outsideclasses.*;
 import com.github.patsalyukas.device.SelfServiceDevice;
 import com.github.patsalyukas.device.SelfServiceDeviceBrokenException;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
 @Getter
 @Setter
 public class ClientOfSelfServiceDevice {
@@ -29,14 +32,14 @@ public class ClientOfSelfServiceDevice {
         return result;
     }
 
-    public Result insertCard() throws SelfServiceDeviceBrokenException {
+    public Result insertCard() throws SelfServiceDeviceBrokenException, NoSuchProviderException, NoSuchAlgorithmException {
         if (cardInserted) return Result.SUCCESS;
         Result result = selfServiceDevice.takeCard(card);
         if (result == Result.SUCCESS) cardInserted = true;
         return result;
     }
 
-    public Result getBackCard() throws SelfServiceDeviceBrokenException {
+    public Result getBackCard() throws SelfServiceDeviceBrokenException, NoSuchProviderException, NoSuchAlgorithmException {
         Result result = selfServiceDevice.giveBackCard(card);
         if (result == Result.SUCCESS) cardInserted = false;
         return result;

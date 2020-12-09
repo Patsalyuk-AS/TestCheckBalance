@@ -9,8 +9,8 @@ public class BankCard implements Card {
     private final String lastName;
     private final String cardNumber;
     private final String expDate;
-    private final String PIN;
-    private final String CVI;
+    private final String pin;
+    private final String cvi;
     private final BankCardType type;
 
     @Override

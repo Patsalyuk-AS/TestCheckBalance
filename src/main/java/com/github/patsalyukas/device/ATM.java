@@ -3,6 +3,9 @@ package com.github.patsalyukas.device;
 import com.github.patsalyukas.outsideclasses.*;
 import lombok.Value;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
 @Value
 public class ATM implements SelfServiceDevice {
 
@@ -12,7 +15,7 @@ public class ATM implements SelfServiceDevice {
     private final Reliability reliability;
 
     @Override
-    public Result takeCard(Card card) {
+    public Result takeCard(Card card) throws NoSuchProviderException, NoSuchAlgorithmException {
         try {
             checkForDamage();
         } catch (SelfServiceDeviceBrokenException exception) {
@@ -22,7 +25,7 @@ public class ATM implements SelfServiceDevice {
     }
 
     @Override
-    public Balance returnBalance(Card card) throws BankException {
+    public Balance returnBalance(Card card) throws BankException, NoSuchProviderException, NoSuchAlgorithmException {
         try {
             checkForDamage();
             return (dataBase.getBalance(card));
@@ -35,7 +38,7 @@ public class ATM implements SelfServiceDevice {
     }
 
     @Override
-    public Result giveBackCard(Card card) {
+    public Result giveBackCard(Card card) throws NoSuchProviderException, NoSuchAlgorithmException {
         try {
             checkForDamage();
         } catch (SelfServiceDeviceBrokenException exception) {
@@ -49,7 +52,7 @@ public class ATM implements SelfServiceDevice {
         dataBase.handleBankException(exception);
     }
 
-    private void checkForDamage() throws SelfServiceDeviceBrokenException {
+    private void checkForDamage() throws SelfServiceDeviceBrokenException, NoSuchProviderException, NoSuchAlgorithmException {
         if (reliability.checkDeviceStatus() == DeviceStatus.BAD) {
             throw new SelfServiceDeviceBrokenException("I am out of order!");
         }

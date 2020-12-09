@@ -5,7 +5,7 @@ public enum Wish {
     NO (0),
     YES(1);
 
-    private int code;
+    private final int code;
 
     Wish(int code) {
         this.code = code;
