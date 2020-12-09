@@ -13,6 +13,9 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mainClass>com.github.patsalyukas.Main</mainClass>
+        <sonar.projectKey>Patsalyuk-AS_TestCheckBalance</sonar.projectKey>
+        <sonar.organization>patsalyuk-as</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>
